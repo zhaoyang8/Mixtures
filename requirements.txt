@@ -1,8 +1,10 @@
+# Core numerical stack
+numpy>=1.22
+pandas>=1.5
+scipy>=1.9
 
-# Tested with Python 3.11+
-numpy>=1.26
-scipy>=1.11
-pandas>=2.0
-matplotlib>=3.8
-numba>=0.58
+# Time-series + state space models
 statsmodels>=0.14
+
+# Plotting
+matplotlib>=3.6
