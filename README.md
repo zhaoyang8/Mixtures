@@ -1,20 +1,30 @@
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](#) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+# Convex Spectral Mixtures of AR States — Code & Replication
 
+Code to reproduce the empirical results for
 
-# Mixtures of AR(1) Components — Companion Code
+> **Convex Spectral Mixtures of AR States: Uniform Whittle Theory Near Unity and Macroeconomic Forecasting**  
+> Zhaoyang Xu
 
-Companion repository for **Xu (2025), “Mixtures of AR(1) Components: Sieve–Whittle Estimation, Support Localization, and a Closed‑Form EM Weight Update.”**
+The project models a univariate time series as a finite **convex spectral mixture** of autoregressive atoms. On the time side, the process is a mixture of independent AR(1) states (optionally plus measurement noise). On the frequency side, the spectrum is a convex combination of Poisson kernels, with optional **AR(2) cycle atoms** (rotations) for localized bumps. The repo provides:
 
-## What this implements
-- **Sieve–Whittle estimator** on fixed and shrinking boundaries (discrete Whittle objective with correct `2π` scaling).
-- **Uniform LLN checks** via simulation (fixed and shrinking boundary regimes).
-- **Support localization** + **barycentric pole** recovery from sieve mass.
-- **Closed‑form EM M‑step** for mixture weights under a unit‑variance sum constraint (one‑dimensional dual; monotone likelihood ascent).
-- Replication scaffold for the **U.S. unemployment** application (test MSE & log score vs. Yule‑Walker AR(2)).
+- Baseline forecasters: **ARMA**, **Unobserved Components (UC)**, a **spectral‑smoothing AR** predictor, and **ARFIMA**.
+- Two implementations of spectral mixtures:
+  1. **Whittle mixture** over a boundary‑dense dictionary of signed AR(1) poles and AR(2) cycles (two‑pass grid refine).
+  2. **EM mixture** of signed AR(1) + white noise with a **sum‑constraint** closed‑form M‑step for weights/σ².
 
-> Paper reference sections: uniform LLN (Sec. 3; Lemmas 3.3–3.4), localization (Sec. 4), EM M-step (Sec. 5; Theorem 5.2), simulations + unemployment results (Sec. 6).
+Outputs include a comparison table (MSE and Gaussian log score) and two figures (spectrum fit; reliability diagrams).
 
-## Notes
-- Periodogram scaling uses `s(ω)=2π f(ω)` so the discrete objective is `log s + (2π)I/s` (see paper’s Remark 3.1).
-- For shrinking-boundary runs, pick meshes that satisfy the rate conditions discussed in Assumption 3.7.
-- The unemployment replication uses `statsmodels` macrodata (or you can supply your own series).
+---
+
+## Quick start
+
+```bash
+# 1) Create & activate a virtual environment (example: venv)
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+
+# 2) Install dependencies
+pip install -r requirements.txt
+
+# 3) Run the experiment (writes a CSV, a TeX table, and two figures)
+python empirics_benchmarks.py
